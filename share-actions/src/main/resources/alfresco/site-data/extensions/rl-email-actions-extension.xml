@@ -2,7 +2,7 @@
   <modules>
     <module>
       <id>Redpill Linpro - Email Actions - Mailto action</id>
-      <version>${noSnapshotVersion}</version>
+      <version>${project.version}</version>
       <customizations>
         <customization>
           <targetPackageRoot>org.alfresco</targetPackageRoot>

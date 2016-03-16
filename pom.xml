@@ -13,7 +13,7 @@
 
   <groupId>org.redpill-linpro.alfresco.email</groupId>
   <artifactId>alfresco-email</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>Alfresco E-mail</name>
   <packaging>pom</packaging>
 
