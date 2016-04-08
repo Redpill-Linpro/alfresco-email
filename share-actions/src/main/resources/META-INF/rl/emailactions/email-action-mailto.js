@@ -6,7 +6,7 @@
  * @returns {undefined}
  */
 (function(_getActionUrls) {
-
+  $isValueSet = Alfresco.util.isValueSet;
   getActionUrls = function (record, siteId) {
     var actionUrls = _getActionUrls.call(this, record, siteId);
 
