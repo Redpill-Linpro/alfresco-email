@@ -1,41 +1,43 @@
-/**
- * 
- * Adds an action url substitution for {mailtoLink} which links to a document details page.
- * 
- * @param {type} _getActionUrls
- * @returns {undefined}
- */
-(function(_getActionUrls) {
-  $isValueSet = Alfresco.util.isValueSet;
-  getActionUrls = function (record, siteId) {
-    var actionUrls = _getActionUrls.call(this, record, siteId);
-
-    var jsNode = record.jsNode,
-      nodeRef = jsNode.isLink ? jsNode.linkedNode.nodeRef : jsNode.nodeRef,
-      nodeRef = jsNode.isLink && !$isValueSet(nodeRef) ? "invalidlink" : nodeRef,
-      strNodeRef = nodeRef.toString(),
-      nodeRefUri = nodeRef.uri,
-      contentUrl = jsNode.contentURL,
-      workingCopy = record.workingCopy || {},
-      recordSiteId = Alfresco.util.isValueSet(record.location.site) ? record.location.site.name : null,
-      fnPageURL = Alfresco.util.bind(function(page)
+(function() {
+  YAHOO.Bubbling.fire("registerAction", {
+      actionName: "onActionMultiEmail",
+      fn: function multiEmail(record, owner)
       {
-         return Alfresco.util.siteURL(page,
-         {
-            site: YAHOO.lang.isString(siteId) ? siteId : recordSiteId
-         });
-      }, this);
+        var payload = [];
+        if(Array.isArray(record)){
+          for(var i = 0; i < record.length; i++){
+           payload[i] = {
+             nodeRef: record[i].nodeRef,
+             fileName: record[i].fileName
+           };
+          }
+        }
+        else{
+         payload =[{
+                 nodeRef: record.nodeRef,
+                 fileName: record.fileName
+               }];
+        }
+        var body = "";
+        var subject = "";
+        var currentBrowserBaseUrl = window.location.protocol + "//" +window.location.host;
+        for (var i = 0; i< payload.length; i++) {
+          if (body.length > 0) {
+            body += " \n"
+            subject += ", "
+          }
+          body += payload[i].fileName + " - " + Alfresco.util.combinePaths(currentBrowserBaseUrl, Alfresco.util.siteURL("document-details?nodeRef=" + payload[i].nodeRef));
+          subject += payload[i].fileName;
+        }
 
-    var currentBrowserBaseUrl = window.location.protocol + "//" +window.location.host;    
-    var currentMailToLink = "mailto:?subject=" + encodeURIComponent(jsNode.properties.cm_name) + "&amp;body=" + encodeURIComponent(Alfresco.util.combinePaths(currentBrowserBaseUrl, fnPageURL("document-details?nodeRef=" + strNodeRef)));
-    actionUrls.mailtoLink = currentMailToLink;
-    return actionUrls;
-  };
-  
-  if (Alfresco.DocumentActions) {
-    Alfresco.DocumentActions.prototype.getActionUrls = getActionUrls;
-  }
-  if (Alfresco.DocumentList) {
-    Alfresco.DocumentList.prototype.getActionUrls = getActionUrls;
-  }
-}(Alfresco.doclib.Actions.prototype.getActionUrls));
+        var currentMailToLink = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body)
+        window.open(currentMailToLink);
+      }
+
+    });
+
+
+
+})();
+
+
