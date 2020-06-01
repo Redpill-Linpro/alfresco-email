@@ -29,7 +29,7 @@ Share dependency:
 <dependency>
   <groupId>org.redpill-linpro.alfresco.email</groupId>
   <artifactId>alfresco-email-share-actions</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 

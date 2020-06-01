@@ -11,10 +11,25 @@
       </customizations>
       
       <configurations>
+
+        <config evaluator="string-compare" condition="DocLibCustom">
+          <dependencies>
+            <js src="rl/emailactions/email-action-mailto.js" />
+            <css src="rl/emailactions/email-action-mailto.css" />
+          </dependencies>
+
+        </config>
+
+        <config evaluator="string-compare" condition="DocumentLibrary">
+          <multi-select>
+            <action type="action-link" asset="document" id="onActionMultiEmail" icon="document-publish" label="rl.actions.mail-to" />
+          </multi-select>
+        </config>
+
         <config evaluator="string-compare" condition="DocLibActions">
           <actions>
-            <action id="document-mail-to" type="link" label="rl.actions.mail-to" icon="document-publish">
-              <param name="href">{mailtoLink}</param>
+            <action id="document-mail-to" type="javascript" label="rl.actions.mail-to" icon="document-publish">
+              <param name="function">onActionMultiEmail</param>
             </action>
           </actions>
           
